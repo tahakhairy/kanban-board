@@ -3,6 +3,7 @@ import Input from './Input'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { DevTool } from '@hookform/devtools'
+import { useEffect } from 'react'
 
 interface Form {
   title: string
@@ -12,7 +13,14 @@ interface Form {
   phone: number
 }
 
-const Form = () => {
+interface FormProps {
+  addMember: (values: Form) => void
+  editMember: (id: string, values: Form) => void
+  formMethod: 'add' | 'edit' | 'delete' | null
+  formData: Form
+}
+
+const Form = ({ addMember, editMember, formMethod, formData }: FormProps) => {
   const schema = yup.object({
     title: yup.string().trim().required('Field is required'),
     name: yup.string().trim().required('Field is required'),
@@ -32,23 +40,37 @@ const Form = () => {
     handleSubmit,
     register,
     control,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<Form>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      age: 21
+    defaultValues: { age: 21 },
+    resetOptions: {
+      keepValues: false,
+      keepIsSubmitted: false
     }
   })
 
+  useEffect(() => {
+    if (formMethod === 'edit' && formData) {
+      reset(formData)
+    }
+  }, [formData])
+
   const onSubmit = (values: Form) => {
-    console.log(values)
+    if (formMethod === 'add') {
+      addMember(values)
+    } else if (formMethod === 'edit') {
+      editMember(values.id, values)
+    }
+    reset()
   }
 
   return (
     <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 m-8"
+        className="grid grid-cols-3 place-items-start place-content-center  mx-auto gap-4 m-8"
       >
         <Input
           id="title"
@@ -90,7 +112,8 @@ const Form = () => {
           {...register('phone')}
           errors={errors.phone?.message}
         />
-        <button className="bg-blue-500 text-white p-2 rounded-md mt-4">
+
+        <button className="bg-blue-500 text-white rounded-md col-span-3 place-self-center px-5 py-2">
           Submit
         </button>
       </form>
