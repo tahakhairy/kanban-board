@@ -2,9 +2,9 @@ import { apiDeleteMember } from '../api'
 import { Member } from '../types'
 import Column from './Column'
 
-const FirstContactCol = ({ members, onDelete, onEdit }) => {
+const SendTherapistCol = ({ members, onDelete, onEdit }) => {
   const deleteMember = async (member: Member) => {
-    const res = await apiDeleteMember(member.id)
+    const res = await apiDeleteMember(member.id, 'stt_members')
     if (res.ok) {
       onDelete(member.id)
     }
@@ -28,4 +28,4 @@ const FirstContactCol = ({ members, onDelete, onEdit }) => {
   )
 }
 
-export default FirstContactCol
+export default SendTherapistCol

@@ -4,9 +4,9 @@ import Column from './Column'
 
 const UnclaimedColumn = ({ members, onDelete, onEdit }) => {
   const deleteMember = async (member: Member) => {
-    const res = await apiDeleteMember(member.id)
+    const res = await apiDeleteMember(member.id, member.belongs)
     if (res.ok) {
-      onDelete(member.id)
+      onDelete(member)
     }
   }
 

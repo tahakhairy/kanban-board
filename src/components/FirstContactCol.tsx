@@ -4,7 +4,7 @@ import Column from './Column'
 
 const FirstContactCol = ({ members, onDelete, onEdit }) => {
   const deleteMember = async (member: Member) => {
-    const res = await apiDeleteMember(member.id)
+    const res = await apiDeleteMember(member.id, 'fc_members')
     if (res.ok) {
       onDelete(member.id)
     }

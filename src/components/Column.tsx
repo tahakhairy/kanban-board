@@ -34,7 +34,7 @@ const Column = ({
 
         <Droppable droppableId={id}>
           {(provided) => (
-            <div data-scrollbar>
+            <div>
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 <div className="flex flex-col gap-3 py-2">
                   {members.map((member, index) => (

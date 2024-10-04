@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext } from 'react-beautiful-dnd'
 import Form from './components/Form'
 import Scrollbar from 'smooth-scrollbar'
 import { Member } from './types'
@@ -69,10 +69,12 @@ const App = () => {
     fetchSttMembers()
   }, [])
 
-  const handleDelete = (deletedMemberId: string) => {
-    setMembers((prevMembers) =>
-      prevMembers.filter((m) => m.id !== deletedMemberId)
-    )
+  const handleDelete = (deletedMember: Member) => {
+    if (deletedMember.belongs === 'unclaimed_members') {
+      setMembers((prevMembers) =>
+        prevMembers.filter((m) => m.id !== deletedMember.id)
+      )
+    }
   }
 
   const handleEdit = (method: 'edit', member: Member) => {
@@ -92,15 +94,44 @@ const App = () => {
     return
   }
 
-  const editMember = async (id: string, updatedMember: Member) => {
-    const res = await apiEditMember(id, updatedMember)
+  const editMember = async (
+    id: string,
+    updatedMember: Member,
+    column: string
+  ) => {
+    const res = await apiEditMember(id, updatedMember, column)
 
     if (res.ok) {
-      setMembers((prevMembers) =>
-        prevMembers.map((member) =>
-          member.id === updatedMember.id ? updatedMember : member
-        )
-      )
+      switch (column) {
+        case 'unclaimed_members':
+          setMembers((prevMembers) =>
+            prevMembers.map((member) =>
+              member.id === updatedMember.id ? updatedMember : member
+            )
+          )
+          break
+        case 'fc_members':
+          setFcMembers((prevMembers) =>
+            prevMembers.map((member) =>
+              member.id === updatedMember.id ? updatedMember : member
+            )
+          )
+          break
+        case 'wo_members':
+          setWoMembers((prevMembers) =>
+            prevMembers.map((member) =>
+              member.id === updatedMember.id ? updatedMember : member
+            )
+          )
+          break
+        case 'stt_members':
+          setSttMembers((prevMembers) =>
+            prevMembers.map((member) =>
+              member.id === updatedMember.id ? updatedMember : member
+            )
+          )
+      }
+
       setFormData(updatedMember)
       setFormMethod(null)
     }

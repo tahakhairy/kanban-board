@@ -30,9 +30,10 @@ export const apiAddMember = async (member: Member) => {
 
 export const apiEditMember = async (
   memberId: string,
-  upadatedValues: Member
+  upadatedValues: Member,
+  columnEndPoint: string
 ) => {
-  return await fetch(`${BASE_URL}/unclaimed_members/${memberId}`, {
+  return await fetch(`${BASE_URL}/${columnEndPoint}/${memberId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -41,8 +42,11 @@ export const apiEditMember = async (
   })
 }
 
-export const apiDeleteMember = async (memberId: string) => {
-  return await fetch(`${BASE_URL}/unclaimed_members/${memberId}`, {
+export const apiDeleteMember = async (
+  memberId: string,
+  columnEndPoint: string
+) => {
+  return await fetch(`${BASE_URL}/${columnEndPoint}/${memberId}`, {
     method: 'DELETE'
   })
 }

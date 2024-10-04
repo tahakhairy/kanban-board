@@ -4,18 +4,19 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { DevTool } from '@hookform/devtools'
 import { useEffect } from 'react'
+import { Member } from '../types'
 
-interface Form {
+interface Form extends Member {
   title: string
   name: string
   age: number
   email: string
-  phone: number
+  phone: string
 }
 
 interface FormProps {
   addMember: (values: Form) => void
-  editMember: (id: string, values: Form) => void
+  editMember: (id: string, values: Form, column: string) => void
   formMethod: 'add' | 'edit' | 'delete' | null
   formData: Form
 }
@@ -59,9 +60,10 @@ const Form = ({ addMember, editMember, formMethod, formData }: FormProps) => {
 
   const onSubmit = (values: Form) => {
     if (formMethod === 'add') {
+      values.belongs = 'unclaimed_members'
       addMember(values)
     } else if (formMethod === 'edit') {
-      editMember(values.id, values)
+      editMember(values.id, values, values.belongs)
     }
     reset()
   }
