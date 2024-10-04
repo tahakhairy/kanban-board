@@ -2,7 +2,7 @@ import { apiDeleteMember } from '../api'
 import { Member } from '../types'
 import Column from './Column'
 
-const UnclaimedColumn = ({ members, onDelete, onEdit }) => {
+const FirstContactCol = ({ members, onDelete, onEdit }) => {
   const deleteMember = async (member: Member) => {
     const res = await apiDeleteMember(member.id)
     if (res.ok) {
@@ -17,8 +17,9 @@ const UnclaimedColumn = ({ members, onDelete, onEdit }) => {
   return (
     <>
       <Column
-        id="unclaimed_col"
-        name="Unclaimed"
+        id="wo_col"
+        name="Preparing Work Offer"
+        bgColor="#BED0DE"
         members={members}
         onDelete={deleteMember}
         onEdit={editMember}
@@ -27,4 +28,4 @@ const UnclaimedColumn = ({ members, onDelete, onEdit }) => {
   )
 }
 
-export default UnclaimedColumn
+export default FirstContactCol

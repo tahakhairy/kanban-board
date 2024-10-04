@@ -1,12 +1,12 @@
 {
-  "members": [
+  "unclaimed_members": [
     {
-      "id": "2",
-      "title": "Dr.",
-      "name": "Samuel Lee",
+      "phone": "+447123456789",
       "email": "samuel.lee@domain.com",
       "age": 45,
-      "phone": "+447123456789"
+      "name": "Samuel Smith",
+      "title": "Dr.",
+      "id": "2"
     },
     {
       "id": "3",
@@ -63,6 +63,44 @@
       "name": "Lara Lee",
       "email": "lara.smith@example.com",
       "phone": "+19876543210"
+    }
+  ],
+  "fc_members": [
+    {
+      "id": "123",
+      "title": "Mr.",
+      "name": "Chen Wang",
+      "email": "chen.wang@domain.com",
+      "age": 41,
+      "phone": "+861234567890"
+    },
+    {
+      "id": "124",
+      "age": 21,
+      "title": "Ms.",
+      "name": "Lara Lee",
+      "email": "lara.smith@example.com",
+      "phone": "+19876543210"
+    }
+  ],
+  "wo_members": [
+    {
+      "id": "125",
+      "title": "Mr.",
+      "name": "Chen Wang",
+      "email": "chen.wang@domain.com",
+      "age": 41,
+      "phone": "+861234567890"
+    }
+  ],
+  "stt_members": [
+    {
+      "id": "126",
+      "title": "Mr.",
+      "name": "Chen Wang",
+      "email": "chen.wang@domain.com",
+      "age": 41,
+      "phone": "+861234567890"
     }
   ]
 }

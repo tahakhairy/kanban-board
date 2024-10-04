@@ -55,7 +55,7 @@ const Form = ({ addMember, editMember, formMethod, formData }: FormProps) => {
     if (formMethod === 'edit' && formData) {
       reset(formData)
     }
-  }, [formData])
+  }, [formData, formMethod, reset])
 
   const onSubmit = (values: Form) => {
     if (formMethod === 'add') {

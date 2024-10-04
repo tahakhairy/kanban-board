@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react'
-
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import Form from './components/Form'
 import Scrollbar from 'smooth-scrollbar'
 import { Member } from './types'
 import UnclaimedColumn from './components/UnclaimedColumn'
-import { apiAddMember, apiEditMember } from './api'
+import FirstContactCol from './components/FirstContactCol'
+import WorkOfferCol from './components/WorkOfferCol'
+import SendTherapistCol from './components/SendTherapistCol'
+
+import {
+  apiAddMember,
+  apiEditMember,
+  apiFetchFcMembers,
+  apiFetchMembers,
+  apiFetchSttMembers,
+  apiFetchWoMembers
+} from './api'
 
 const App = () => {
   const [formMethod, setFormMethod] = useState<
@@ -12,21 +23,50 @@ const App = () => {
   >('add')
 
   const [members, setMembers] = useState<Member[]>([])
-
+  const [fcMembers, setFcMembers] = useState<Member[]>([])
+  const [woMembers, setWoMembers] = useState<Member[]>([])
+  const [sttMembers, setSttMembers] = useState<Member[]>([])
   const [formData, setFormData] = useState<Member>()
 
   useEffect(() => {
-    Scrollbar.init(document.querySelector('#my-scrollbar')!)
+    Scrollbar.initAll()
 
     const fetchMembers = async () => {
-      const res = await fetch('http://localhost:5000/members')
+      const res = await apiFetchMembers()
 
       const data = await res.json()
 
       setMembers(data)
     }
 
+    const fetchFcMembers = async () => {
+      const res = await apiFetchFcMembers()
+
+      const data = await res.json()
+
+      setFcMembers(data)
+    }
+
+    const fetchWoMembers = async () => {
+      const res = await apiFetchWoMembers()
+
+      const data = await res.json()
+
+      setWoMembers(data)
+    }
+
+    const fetchSttMembers = async () => {
+      const res = await apiFetchSttMembers()
+
+      const data = await res.json()
+
+      setSttMembers(data)
+    }
+
     fetchMembers()
+    fetchFcMembers()
+    fetchWoMembers()
+    fetchSttMembers()
   }, [])
 
   const handleDelete = (deletedMemberId: string) => {
@@ -66,6 +106,14 @@ const App = () => {
     }
   }
 
+  const handleOnDragEnd = (result) => {
+    const { destination, source, draggableId } = result
+
+    console.log(destination)
+    console.log(source)
+    console.log(draggableId)
+  }
+
   return (
     <div className="bg-[#D6E4EC] min-h-screen p-5">
       <header className="flex flex-col items-center justify-center text-2xl text-black mb-8 font-bold">
@@ -85,15 +133,32 @@ const App = () => {
       <div className="flex flex-row text-white">
         {/* Kanban Board Section */}
         <div className="flex flex-col w-full text-center">
-          <div className="flex flex-row h-full justify-between gap-2">
-            <UnclaimedColumn
-              members={members}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-            />
-            {/* <Column name="First Contact" />
-            <Column name="Preparing Work Offer" />
-            <Column name="Send to Therapists" /> */}
+          <div className="flex flex-row h-full justify-center gap-2">
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+              <UnclaimedColumn
+                members={members}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
+
+              <FirstContactCol
+                members={fcMembers}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
+
+              <WorkOfferCol
+                members={woMembers}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
+
+              <SendTherapistCol
+                members={sttMembers}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
+            </DragDropContext>
           </div>
         </div>
       </div>
