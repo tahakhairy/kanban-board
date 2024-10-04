@@ -27,4 +27,4 @@ The board has 4 columns:
 ## Final Design
 
 This is the final design of the board:
-![finished-design](public/finished_design.png.png)
+![finished-design](public/finished_design.png)
